@@ -47,6 +47,7 @@ class RCTImageView extends RCTView {
   svgFilter: HTMLElement;
   _blurRadius: ?number;
   _tintColor: ?string;
+  _capInsets: ?object;
 
   _tile: ?boolean; // resizeMode === "repeat"
   _src: ?string; // Used to set the tile image
@@ -108,7 +109,24 @@ class RCTImageView extends RCTView {
   updateTile() {
     let style;
 
-    if (this._tile) {
+    if (this._capInsets) {
+      const imageSlice = [
+        this._capInsets.top || 0,
+        this._capInsets.right || 0,
+        this._capInsets.bottom || 0,
+        this._capInsets.left || 0
+      ];
+
+      style = {
+        borderImageSource: `url(${encodeURI(src)})`,
+        borderImageSlice: imageSlice.join(" "),
+        backgroundImage: "",
+        backgroundSize: "",
+        backgroundRepeat: "",
+        backgroundPosition: "",
+        objectPosition: ""
+      };
+    } else if (this._tile) {
       const {
         frameSize: { width: frameWidth, height: frameHeight },
         _src: src,
@@ -210,6 +228,11 @@ class RCTImageView extends RCTView {
       : "";
     this.updateFilter();
     this.forceRasterization();
+  }
+
+  set capInsets(value: ?object) {
+    this._capInsets = value;
+    this.updateTile();
   }
 
   get imageScale(): number {

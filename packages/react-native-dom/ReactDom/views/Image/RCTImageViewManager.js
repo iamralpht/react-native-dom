@@ -29,6 +29,7 @@ class RCTImageViewManager extends RCTViewManager {
       .addStringProp("resizeMode", this.setResizeMode)
       .addNumberProp("blurRadius", this.setBlurRadius)
       .addColorProp("tintColor", this.setTintColor)
+      .addObjectProp("capInsets", this.setCapInsets)
       .addDirectEvent("onLoadStart")
       .addDirectEvent("onLoad")
       .addDirectEvent("onLoadEnd")
@@ -70,6 +71,10 @@ class RCTImageViewManager extends RCTViewManager {
 
   setTintColor(view: RCTImageView, value: ?string) {
     view.tintColor = value;
+  }
+
+  setCapInsets(view: RCTImageView, value: ?object) {
+    view.capInsets = value;
   }
 
   $$prefetchImage(url: string, resolveId: number, rejectId: number) {
